@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `projetsntlabo`;
-CREATE DATABESE `projetsntlabo`;
+CREATE DATABASE `projetsntlabo`;
 
 DROP TABLE IF EXISTS `professionnels`;
 CREATE TABLE IF NOT EXISTS `professionnels` (
