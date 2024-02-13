@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS `projetsntlabo`;
 CREATE DATABASE `projetsntlabo`;
 
+USE `projetsntlabo`;
 DROP TABLE IF EXISTS `professionnels`;
 CREATE TABLE IF NOT EXISTS `professionnels` (
   `id` int NOT NULL AUTO_INCREMENT,
