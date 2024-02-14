@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS `projetsntlabo`;
 CREATE DATABASE `projetsntlabo`;
 
 USE `projetsntlabo`;
+
 DROP TABLE IF EXISTS `professionnels`;
 CREATE TABLE IF NOT EXISTS `professionnels` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -15,16 +16,17 @@ CREATE TABLE IF NOT EXISTS `professionnels` (
   `Password_hachee` varchar(255) DEFAULT NULL,
   `Bannis` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `professionnels_unites`;
 CREATE TABLE IF NOT EXISTS `professionnels_unites` (
   `id_professionnel` int DEFAULT NULL,
   `id_unite` int DEFAULT NULL,
   KEY `id_professionnel` (`id_professionnel`),
-  KEY `id_unite` (`id_unite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;;
-
+  KEY `id_unite` (`id_unite`),
+  CONSTRAINT `fk_professionnel_id` FOREIGN KEY (`id_professionnel`) REFERENCES `professionnels` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_unite_id` FOREIGN KEY (`id_unite`) REFERENCES `unites` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `responsables_scientifiques`;
 CREATE TABLE IF NOT EXISTS `responsables_scientifiques` (
@@ -32,10 +34,9 @@ CREATE TABLE IF NOT EXISTS `responsables_scientifiques` (
   `id_professionnel` int DEFAULT NULL,
   `date_prise_fonction` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_professionnel` (`id_professionnel`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;;
-
-
+  KEY `id_professionnel` (`id_professionnel`),
+  CONSTRAINT `fk_responsable_id` FOREIGN KEY (`id_professionnel`) REFERENCES `professionnels` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `unites`;
 CREATE TABLE IF NOT EXISTS `unites` (
@@ -45,4 +46,3 @@ CREATE TABLE IF NOT EXISTS `unites` (
   `equipements_modernes` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
