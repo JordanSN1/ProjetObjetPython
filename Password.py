@@ -23,9 +23,5 @@ class Password:
 
             return self.password
 
-
-
-
-
 nabil = Password()
 print(nabil.GenererMDP())
