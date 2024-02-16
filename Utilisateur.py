@@ -1,4 +1,10 @@
 class Utilisateur(object):
+
+    def __init__(self, nom, prenom, age):
+        self.nom = nom
+        self.prenom = prenom
+        self.age = age
+
     def afficher_menu(self):
         print("Menu:")
         print("1. Saisir nom et prénom")
@@ -7,10 +13,6 @@ class Utilisateur(object):
         print("4. Quitter")
         print("5. Login")
 
-    def __init__(self, nom, prenom, age):
-        self.nom = nom
-        self.prenom = prenom
-        self.age = age
 
     def saisir_nom_prenom(self):
         self.nom = input("Entrez votre nom : ")

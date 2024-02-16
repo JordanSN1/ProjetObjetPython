@@ -1,48 +1,40 @@
-DROP DATABASE IF EXISTS `projetsntlabo`;
-CREATE DATABASE `projetsntlabo`;
+DROP DATABASE IF EXISTS sntlabo;
+CREATE DATABASE sntlabo;
+USE sntlabo;
 
-USE `projetsntlabo`;
 
-DROP TABLE IF EXISTS `professionnels`;
-CREATE TABLE IF NOT EXISTS `professionnels` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(50) NOT NULL,
-  `prenom` varchar(50) NOT NULL,
-  `age` int NOT NULL,
-  `adresse_mail` varchar(100) NOT NULL,
-  `numero_telephone` varchar(20) NOT NULL,
-  `code_projet` varchar(20) DEFAULT NULL,
-  `type_professionnel` enum('chercheur','medecin','commercial','assistant') NOT NULL,
-  `Password_hachee` varchar(255) DEFAULT NULL,
-  `Bannis` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE role(
+   id_role INT AUTO_INCREMENT,
+   role VARCHAR(50),
+   PRIMARY KEY(id_role)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `professionnels_unites`;
-CREATE TABLE IF NOT EXISTS `professionnels_unites` (
-  `id_professionnel` int DEFAULT NULL,
-  `id_unite` int DEFAULT NULL,
-  KEY `id_professionnel` (`id_professionnel`),
-  KEY `id_unite` (`id_unite`),
-  CONSTRAINT `fk_professionnel_id` FOREIGN KEY (`id_professionnel`) REFERENCES `professionnels` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_unite_id` FOREIGN KEY (`id_unite`) REFERENCES `unites` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE unite(
+   id_unite INT AUTO_INCREMENT,
+   nom_unite VARCHAR(50),
+   region VARCHAR(50) CHECK(region IN ('STRASBOURG','RENNES','MARSEILLE','GRENOBLE','BORDEAUX','TOULOUSE') ),
+   PRIMARY KEY(id_unite)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `responsables_scientifiques`;
-CREATE TABLE IF NOT EXISTS `responsables_scientifiques` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_professionnel` int DEFAULT NULL,
-  `date_prise_fonction` date NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_professionnel` (`id_professionnel`),
-  CONSTRAINT `fk_responsable_id` FOREIGN KEY (`id_professionnel`) REFERENCES `professionnels` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE utilisateur(
+   id_utilisateur INT AUTO_INCREMENT,
+   nom_utilisateur VARCHAR(50),
+   prenom_utilisateur VARCHAR(50),
+   email_utilisateur VARCHAR(50),
+   numtel_utilisateur INT,
+   date_debut DATE,
+   ville_utilisateur VARCHAR(50),
+   code_projet VARCHAR(50),
+   password_hash VARCHAR(100),
+   id_role INT NOT NULL,
+   PRIMARY KEY(id_utilisateur),
+   FOREIGN KEY(id_role) REFERENCES role(id_role) ON DELETE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `unites`;
-CREATE TABLE IF NOT EXISTS `unites` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(50) NOT NULL,
-  `region` varchar(50) NOT NULL,
-  `equipements_modernes` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE appartient(
+   id_utilisateur INT,
+   id_unite INT,
+   PRIMARY KEY(id_utilisateur, id_unite),
+   FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
+   FOREIGN KEY(id_unite) REFERENCES unite(id_unite) ON DELETE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -3,8 +3,8 @@ import random
 
 
 class Password:
-    def __init__(self, password=""):
-        self.password = password
+    def __init__(self):
+        self.password = ""
         self.caracteres = [st.punctuation, st.ascii_letters, st.digits]
         self.taille = 0
 
