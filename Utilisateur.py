@@ -1,52 +1,54 @@
+import random
+import string as st
+import datetime
 class Utilisateur(object):
 
-    def __init__(self, nom, prenom, age):
-        self.nom = nom
-        self.prenom = prenom
-        self.age = age
+    def __init__(self):
+        self.nom = ""
+        self.prenom = ""
+        self.age = 0
+        self.email  = ""
+        self.numTel = 0
+        self.role = ""
+        self.code_projet = ""
+        self.passwordHash = ""
+        self.date_debut = ""
+        self.ville = ""
+        self.password = ""
+        self.caracteres = ""
+    def saisie_utilisateur(self):
+        self.nom = input("Veuillez saisir votre nom: ")
+        self.prenom = input("Veuillez saisir votre prénom: ")
+        self.age = int(input("Veuillez saisir votre âge: "))
+        self.email = input("Veuillez saisir votre email: ")
+        self.numTel = int(input("Veuillez saisir votre numéro de téléphone: "))
+        self.ville = input("Veuillez saisir votre ville: ")
+        self.role = input("Veuillez saisir votre role: ")
+        self.code_projet = input("Veuillez saisir le code du projet: ")
+        self.date_debut = datetime.datetime(int(input("Veuillez saisir l'année de début: ")), int(input("Veuillez saisir le mois de début: ")), int(input("Veuillez saisir le jour de début: ")) )
+    def GenererLogin(self):
+        self.login = f"{self.nom}.{self.prenom[0]}"
+        return self.login
+    def GenererPassword(self):
+        self.caracteres = st.punctuation+ st.ascii_letters+ st.digits
+        while True:
+            self.taille = int(input("Veuillez saisir la taille pour votre mot de passe (Min : 12 , Max : 25): "))
+            if self.taille < 12:
+                print("Le mot de passe doit contenir au moins 12 caractères")
 
-    def afficher_menu(self):
-        print("Menu:")
-        print("1. Saisir nom et prénom")
-        print("2. Saisir age")
-        print("3. Affichage")
-        print("4. Quitter")
-        print("5. Login")
+            elif self.taille > 25:
+                print("Le mot de passe doit contenir au plus 25 caractères")
+            else:
+                break
+        while True:
 
+            for i in range(self.taille):
+                index = random.randint(0, 2)
+                self.password += self.caracteres[random.randint(0, len(self.caracteres)) - 1]
 
-    def saisir_nom_prenom(self):
-        self.nom = input("Entrez votre nom : ")
-        confirmation_nom = input("Taper Oui si votre nom est correct pour continuer sinon taper Non ").upper()
-        if confirmation_nom != "OUI":
-            self.nom = input("Entrez votre nom correctement, vous pouvez le changer qu'une seule fois : ")
+            return self.password
 
-        self.prenom = input("Entrez votre prénom : ")
-        confirmation_prenom = input("Taper Oui si votre prénom est correct pour continuer sinon taper Non ").upper()
-        if confirmation_prenom != "OUI":
-            self.prenom = input("Entrez votre prénom correctement, vous pouvez le changer qu'une seule fois : ")
-
-    def saisir_age(self):
-        self.age = input("Entrez votre âge : ")
-        while not self.age.isdigit():
-            print("L'âge doit être un nombre. Veuillez entrer votre âge correctement.")
-            self.age = input("Entrez votre âge : ")
-        self.age = int(self.age)  # Convertir l'âge en entier après validation
-
-    def affichage(self):
-        print("Vos informations :")
-        print(f"Votre Nom : {self.nom}\nVotre Prénom : {self.prenom}\nVotre Âge : {self.age}")
-
-Nabil = Utilisateur(nom='', prenom='', age=0)
-while True:
-    Nabil.afficher_menu()
-    choix = input("Choisissez une option (1, 2, 3, 4, 5) : ")
-    if choix == '1':
-        Nabil.saisir_nom_prenom()
-    elif choix == '2':
-        Nabil.saisir_age()
-    elif choix == '3':
-        Nabil.affichage()
-    elif choix == '4':
-        break
-    else:
-        print("Choix non valide. Veuillez sélectionner une option valide.")
+Nabil = Utilisateur()
+Nabil.saisie_utilisateur()
+print(Nabil.GenererLogin())
+print(Nabil.GenererPassword())

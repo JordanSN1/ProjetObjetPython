@@ -1,7 +1,5 @@
 import string as st
 import random
-
-
 class Password:
     def __init__(self):
         self.password = ""
@@ -27,5 +25,3 @@ class Password:
             return self.password
 
 
-nabil = Password()
-print(nabil.generer_mdp())
