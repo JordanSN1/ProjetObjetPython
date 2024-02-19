@@ -1,6 +1,8 @@
 import random
 import string as st
 import datetime
+import hashlib
+
 class Utilisateur(object):
 
     def __init__(self):
@@ -47,8 +49,14 @@ class Utilisateur(object):
                 self.password += self.caracteres[random.randint(0, len(self.caracteres)) - 1]
 
             return self.password
+    def HashPassword(self):
+        print("Le mot de passe hasher est : ")
+        pwdh= hashlib.sha256(self.password.encode("utf-8")).hexdigest()
+        print(pwdh)
+
 
 Nabil = Utilisateur()
 Nabil.saisie_utilisateur()
 print(Nabil.GenererLogin())
 print(Nabil.GenererPassword())
+print(Nabil.HashPassword())
