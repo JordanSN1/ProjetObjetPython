@@ -2,6 +2,9 @@ import Utilisateur as ut
 import Sauvegarde_Donnees as sd
 
 def main():
+    """
+        Ceci est la fonction principale. Elle présente un menu à l'utilisateur et exécute le choix de l'utilisateur.
+    """
     utilisateur = ut.Utilisateur()
     sauvegarde = sd.SauvegardeDonnees()
     if sauvegarde.afficherProjet() == []:
