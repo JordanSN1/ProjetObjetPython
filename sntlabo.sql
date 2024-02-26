@@ -27,6 +27,7 @@ CREATE TABLE utilisateur (
    id_utilisateur INT AUTO_INCREMENT,
    nom_utilisateur VARCHAR(50),
    prenom_utilisateur VARCHAR(50),
+   login_utilisateur VARCHAR(50),
    email_utilisateur VARCHAR(50),
    numtel_utilisateur INT,
    date_debut DATE,

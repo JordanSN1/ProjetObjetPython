@@ -11,6 +11,14 @@ class SauvegardeDonnees:
                                                   host=config.DBConfig['host'],
                                                   database=config.DBConfig['database'])
         self.cursor = self.connection.cursor()
+    def getutilisateur(self):
+        """
+        Cette fonction permet de récupérer l'utilisateur.
+        :return:
+        """
+        self.cursor.execute(f"SELECT * FROM utilisateur")
+        for element in self.cursor:
+            return element
     def getIdRoles(self , role):
 
         """
@@ -21,6 +29,16 @@ class SauvegardeDonnees:
         self.cursor.execute(f"SELECT id_role FROM role WHERE role = '{role}'")
         for element in self.cursor:
             return element[0]
+    def getLoginUtilisateur(self):
+        """
+        Cette fonction permet de récupérer le login de l'utilisateur.
+
+        :return:
+        """
+        self.cursor.execute(f"SELECT login_utilisateur FROM utilisateur ")
+        for element in self.cursor:
+            return element
+
     def getIdUtilisateur(self, nom, prenom):
         """
         Cette fonction permet de récupérer l'id de l'utilisateur.
@@ -32,11 +50,12 @@ class SauvegardeDonnees:
         for element in self.cursor:
             return element[0]
 
-    def EnvoiDonneesUtilisateur(self, nom, prenom, email, numTel, ville, id_projet, passwordHash, date_debut, id_role):
+    def EnvoiDonneesUtilisateur(self, nom, prenom,login ,email, numTel, ville, id_projet, passwordHash, date_debut, id_role):
         """
         Cette fonction permet d'envoyer les données de l'utilisateur.
         :param nom:
         :param prenom:
+        :param login:
         :param email:
         :param numTel:
         :param ville:
@@ -46,7 +65,7 @@ class SauvegardeDonnees:
         :param id_role:
         :return:
         """
-        requete = (f"INSERT INTO utilisateur (nom_utilisateur, prenom_utilisateur, email_utilisateur, numtel_utilisateur, ville_utilisateur, id_projet, password_hash, date_debut, id_role) VALUES ('{nom}','{prenom}','{email}','{numTel}','{ville}','{id_projet}','{passwordHash}','{date_debut}','{id_role}')")
+        requete = (f"INSERT INTO utilisateur (nom_utilisateur, prenom_utilisateur,login_utilisateur, email_utilisateur, numtel_utilisateur, ville_utilisateur, id_projet, password_hash, date_debut, id_role) VALUES ('{nom}','{prenom}','{login}','{email}','{numTel}','{ville}','{id_projet}','{passwordHash}','{date_debut}','{id_role}')")
         self.cursor.execute(requete)
         self.connection.commit()
 
@@ -105,6 +124,24 @@ class SauvegardeDonnees:
         self.cursor.execute(f"SELECT projet.nom_projet , projet.id_projet FROM projet INNER JOIN utilisateur ON projet.id_projet = utilisateur.id_projet WHERE nom_utilisateur = '{utilisateur}'")
         for element in self.cursor:
             return element
+    def VerifierLogin(self, login):
+        """
+        Cette fonction permet de vérifier le login.
+        :param login:
+        :return:
+        """
+        self.cursor.execute(f"SELECT login_utilisateur FROM utilisateur WHERE login_utilisateur = '{login}'")
+        for element in self.cursor:
+            return element[0]
+    def getHashPassword(self, login):
+        """
+        Cette fonction permet de récupérer le mot de passe hashé.
+        :param login:
+        :return:
+        """
+        self.cursor.execute(f"SELECT password_hash FROM utilisateur WHERE login_utilisateur = '{login}'")
+        for element in self.cursor:
+            return element[0]
     def afficherProjet(self):
         """
         Cette fonction permet d'afficher les projets.
@@ -123,4 +160,6 @@ class SauvegardeDonnees:
         requete = (f"UPDATE utilisateur SET id_projet = '{id_projet}' WHERE id_utilisateur = '{id_utilisateur}'")
         self.cursor.execute(requete)
         self.connection.commit()
+
+sauvegarde = SauvegardeDonnees()
 

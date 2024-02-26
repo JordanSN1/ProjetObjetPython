@@ -49,9 +49,8 @@ class Utilisateur(object):
         return self._password
 
     def HashPassword(self):
-        print("Le mot de passe hashé est : ")
-        pwdh = hashlib.sha256(self._password.encode("utf-8")).hexdigest()
-        print(pwdh)
+        self._passwordHash = hashlib.sha256(self._password.encode("utf-8")).hexdigest()
+        return self._passwordHash
 
     # Getters
     def get_nom(self):
@@ -59,7 +58,8 @@ class Utilisateur(object):
 
     def get_prenom(self):
         return self._prenom
-
+    def get_login(self):
+        return self._login
     def get_email(self):
         return self._email
 
