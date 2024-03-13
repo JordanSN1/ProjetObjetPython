@@ -48,4 +48,4 @@ CREATE TABLE appartient (
    FOREIGN KEY(id_unite) REFERENCES unite(id_unite) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO role(role) VALUES('chercheur scientifique'),('collaborateur médecin'),('collaborateur commercial'),('assistant');
+INSERT INTO role(role) VALUES('admin'),('chercheur scientifique'),('collaborateur médecin'),('collaborateur commercial'),('assistant');

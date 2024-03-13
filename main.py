@@ -2,9 +2,10 @@ import Utilisateur as ut
 import Sauvegarde_Donnees as sd
 import hashlib
 
+
 def main():
     Erreur = 0
-    Connexion = False
+    Connexion = bool
 
     utilisateur = ut.Utilisateur()
     sauvegarde = sd.SauvegardeDonnees()
