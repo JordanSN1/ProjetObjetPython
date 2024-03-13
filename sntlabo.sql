@@ -20,6 +20,7 @@ CREATE TABLE unite (
    id_unite INT AUTO_INCREMENT,
    nom_unite VARCHAR(50),
    region VARCHAR(50) CHECK(region IN ('STRASBOURG','RENNES','MARSEILLE','GRENOBLE','BORDEAUX','TOULOUSE')),
+   role_unite VARCHAR(50) CHECK(role_unite IN ('membre','chef')),
    PRIMARY KEY(id_unite)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -48,4 +49,11 @@ CREATE TABLE appartient (
    FOREIGN KEY(id_unite) REFERENCES unite(id_unite) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
 INSERT INTO role(role) VALUES('admin'),('chercheur scientifique'),('collaborateur médecin'),('collaborateur commercial'),('assistant');
+
+INSERT INTO projet(nom_projet, date_debut, date_fin) VALUES('AdminProjet', '0000-00-0', '0000-00-0');
+
+INSERT INTO `utilisateur`(`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `login_utilisateur`, `email_utilisateur`, `numtel_utilisateur`, `date_debut`, `ville_utilisateur`, `id_projet`, `password_hash`, `id_role`)
+VALUES (1, 'admin', 'admin', 'admin', 'admin@gmail.com', '0', '0000-00-00', 'Entreprise',1, 'ccb2f398a75f07465e8400b141aeb72d6e3f1b81de7fdcf9fdaa52fd27bc95a0', 1);
