@@ -6,17 +6,17 @@ import hashlib
 class Utilisateur(object):
 
     def __init__(self):
-        self._nom = str
-        self._prenom = str
-        self._email = str
-        self._numTel = int
-        self._role = str
-        self._code_projet = str
-        self._passwordHash = str
-        self._date_debut = str
-        self._ville = str
-        self._password = str
-        self._caracteres = str
+        self._nom = ""
+        self._prenom = ""
+        self._email = ""
+        self._numTel = 0
+        self._role = ""
+        self._code_projet = ""
+        self._passwordHash = ""
+        self._date_debut = ""
+        self._ville = ""
+        self._password = ""
+        self._caracteres = ""
 
     def saisie_utilisateur(self):
         self._nom = input("Veuillez saisir votre nom : ")
@@ -89,3 +89,9 @@ class Utilisateur(object):
     def get_caracteres(self):
         return self._caracteres
 
+
+admin = hashlib.sha256("rootAdmin_0001".encode("utf-8")).hexdigest()
+print(admin)
+utilisateur = Utilisateur()
+password = utilisateur.GenererPassword()
+print(password)

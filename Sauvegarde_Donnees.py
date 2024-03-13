@@ -1,5 +1,7 @@
 import mysql.connector
 import config
+import hashlib
+
 class SauvegardeDonnees:
     def __init__(self):
 
@@ -28,12 +30,12 @@ class SauvegardeDonnees:
         self.cursor.execute(f"SELECT id_role FROM role WHERE role = '{role}'")
         for element in self.cursor:
             return element[0]
-    def getLoginUtilisateur(self):
+    def getLoginUtilisateur(self, id_utilisateur):
         """
         Cette fonction permet de récupérer le login de l'utilisateur.
 
         """
-        self.cursor.execute(f"SELECT login_utilisateur FROM utilisateur ")
+        self.cursor.execute(f"SELECT login_utilisateur FROM utilisateur where id_utilisateur = {id_utilisateur}")
         for element in self.cursor:
             return element
 
@@ -129,6 +131,73 @@ class SauvegardeDonnees:
 
         """
         requete = (f"UPDATE utilisateur SET id_projet = '{id_projet}' WHERE id_utilisateur = '{id_utilisateur}'")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdateNomUtilisateur(self,Ancientname ,NewName):
+        """
+        Cette fonction permet de mettre à jour l'utilisateur.
+
+        """
+        requete = (f"UPDATE utilisateur SET nom_utilisateur = {NewName} WHERE nom_utilisateur = {Ancientname}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdatePrenomUtilisateur(self,Ancientname ,NewName):
+        """
+        Cette fonction permet de mettre à jour le prénom de l'utilisateur.
+
+        """
+        requete = (f"UPDATE utilisateur SET prenom_utilisateur = {NewName} WHERE prenom_utilisateur = {Ancientname}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdateEmailUtilisateur(self,AncientEmail ,NewEmail):
+        """
+        Cette fonction permet de mettre à jour l'email de l'utilisateur.
+
+        """
+        requete = (f"UPDATE utilisateur SET email_utilisateur = {NewEmail} WHERE email_utilisateur = {AncientEmail}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdateNumTelUtilisateur(self,AncientNumTel ,NewNumTel):
+        """
+        Cette fonction permet de mettre à jour le numéro de téléphone de l'utilisateur.
+
+        """
+        requete = (f"UPDATE utilisateur SET numtel_utilisateur = {NewNumTel} WHERE numtel_utilisateur = {AncientNumTel}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdateVilleUtilisateur(self,AncientVille ,NewVille):
+        """
+        Cette fonction permet de mettre à jour la ville de l'utilisateur.
+
+        """
+        requete = (f"UPDATE utilisateur SET ville_utilisateur = {NewVille} WHERE ville_utilisateur = {AncientVille}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def UpdatePasswordUtilisateur(self,NewPassword,id_utilisateur):
+        """
+        Cette fonction permet de mettre à jour le mot de passe de l'utilisateur.
+
+        """
+        NewPasswordhash = hashlib.sha256(NewPassword.encode("utf-8")).hexdigest()
+
+        requete = (f"UPDATE utilisateur SET password_hash = {NewPasswordhash} WHERE id_utilisateur = {id_utilisateur}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+
+    def UpdateUniteUtilisateur(self ,NewUnite, id_utilisateur):
+        """
+        Cette fonction permet de mettre à jour l'unité de l'utilisateur.
+
+        """
+        requete = (f"UPDATE appartient SET id_unite = {NewUnite} WHERE id_utilisateur = {id_utilisateur}")
+        self.cursor.execute(requete)
+        self.connection.commit()
+    def supprimerUtilisateur(self, id_utilisateur):
+        """
+        Cette fonction permet de supprimer l'utilisateur.
+
+        """
+        requete = (f"DELETE FROM utilisateur WHERE id_utilisateur = {id_utilisateur}")
         self.cursor.execute(requete)
         self.connection.commit()
 
