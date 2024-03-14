@@ -17,22 +17,34 @@ class Utilisateur(object):
         self._ville = ""
         self._password = ""
         self._caracteres = ""
+        self._login = ""
+    def set_nom(self, nom):
+        self._nom = nom.split()
 
-    def saisie_utilisateur(self):
-        self._nom = input("Veuillez saisir votre nom : ")
-        self._prenom = input("Veuillez saisir votre prénom : ")
-        self._email = input("Veuillez saisir votre email : ")
-        self._numTel = int(input("Veuillez saisir votre numéro de téléphone : "))
-        self._ville = input("Veuillez saisir votre ville : ")
-        self._role = input("Veuillez saisir votre rôle : (chercheur scientifique, collaborateur médecin, collaborateur commercial, assistant)")
-        self._code_projet = input("Veuillez saisir le code du projet : ")
-        self._date_debut = datetime.datetime(int(input("Veuillez saisir l'année de début : ")),
-                                              int(input("Veuillez saisir le mois de début : ")),
-                                              int(input("Veuillez saisir le jour de début : ")))
+    def set_prenom(self, prenom):
+        self._prenom = prenom.split()
 
+
+    def set_email(self, email):
+        self._email = email
+
+    def set_numTel(self, numTel):
+        self._numTel = numTel
+
+    def set_ville(self, ville):
+        self._ville = ville
+
+    def set_role(self, role):
+        self._role = role
+
+    def set_code_projet(self, code_projet):
+        self._code_projet = code_projet
+
+    def set_date_debut(self, annee , mois , jour):
+        self._date_debut = '{0}-{1}-{2}'.format(annee, mois, jour)
     def GenererLogin(self):
-        self._login = f"{self._nom}.{self._prenom[0]}"
-        return self._login
+        self._login = self._prenom[0] + '.' + self._nom[-1]
+        return self._login.lower()
 
     def GenererPassword(self):
         self._caracteres = st.punctuation + st.ascii_letters + st.digits
@@ -90,8 +102,4 @@ class Utilisateur(object):
         return self._caracteres
 
 
-admin = hashlib.sha256("rootAdmin_0001".encode("utf-8")).hexdigest()
-print(admin)
-utilisateur = Utilisateur()
-password = utilisateur.GenererPassword()
-print(password)
+

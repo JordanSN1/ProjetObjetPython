@@ -2,7 +2,16 @@ import Utilisateur as ut
 import Sauvegarde_Donnees as sd
 import hashlib
 import getpass
-
+'''
+pour avoir une liste propre
+sauv = SauvegardeDonnees()
+loginBDD = sauv.getAllLogin()
+data = []
+for element in loginBDD :
+    if element != '':
+        data.append(element)
+print(data)
+'''
 def main():
     Erreur = 0
     Connexion = bool
@@ -19,22 +28,49 @@ def main():
             if hashlib.sha256(password.encode("utf-8")).hexdigest() == sauvegarde.getHashPassword(login):
                 print("Vous êtes connecté en tant qu'administrateur.")
                 Connexionadmin = True
-                if Connexionadmin :
+            else:
+                print("Mot de passe incorrect.")
+                Erreur += 1
+                if Erreur == 3:
+                    print("Vous avez fait 3 erreurs.")
+                    exit()
+                while Connexionadmin :
                     choix = int(input("\tMenu:\n1. Créer un utilisateur\n2. Supprimer un utilisateur\n3. Update un utilisateur\n4. Ajouter un projet\n5. Update l'uniter de l'utilisateur\n6. Quittez\nEntrez votre choix:"))
-                    print(choix)
                     if choix == 1:
-                        utilisateur.saisie_utilisateur()
+                        nom = utilisateur.set_nom(input("Entrez votre nom : ").upper())
+                        prenom = utilisateur.set_prenom(input("Entrez votre prénom : ").upper())
+                        loginBDD = sauvegarde.getAllLogin()
+                        data = []
+                        for element in loginBDD:
+                            if element != '':
+                                data.append(element)
+                        if utilisateur.GenererLogin()  in data:
+                            print("Ce login existe déjà.")
+                        else :
+                            utilisateur.GenererLogin()
+
+
+
                         print(f"Voici votre login, ne le perdez pas ! : {utilisateur.GenererLogin()}")
                         print(f"Voici votre mot de passe, ne le perdez pas ! : {utilisateur.GenererPassword()}")
                         utilisateur.HashPassword()
-                        id_role = sauvegarde.getIdRoles(utilisateur.get_role())
+                        utilisateur.set_email(input("Entrez votre email : "))
+                        utilisateur.set_numTel(input("Entrez votre numéro de téléphone : "))
+                        utilisateur.set_ville(input("Entrez votre ville : "))
+                        while True:
+                            role = input(
+                                "Entrez votre role [chercheur scientifique,collaborateur médecin,collaborateur commercial,assistant] : ")
 
-                        id_utilisateur = sauvegarde.getIdUtilisateur(utilisateur.get_nom(), utilisateur.get_prenom())
-                        if id_utilisateur is not None:
-                            if sauvegarde.getLoginUtilisateur(id_utilisateur) == []:
-                                print("Ce login existe déjà.")
-                        else:
-                            sauvegarde.EnvoiDonneesUtilisateur(utilisateur.get_nom(), utilisateur.get_prenom(),
+                            if role in sauvegarde.getRoles():
+                                utilisateur.set_role(role)
+                                break
+                            else:
+                                print("Ce role n'existe pas.")
+                        utilisateur.set_code_projet(input("Entrez le code du projet : "))
+                        utilisateur.set_date_debut(input("Entrez l'année de début : "),input("Entrez le mois de début : "),input("Entrez le jour de début : "))
+
+                        id_role = sauvegarde.getIdRoles(utilisateur.get_role())
+                        sauvegarde.EnvoiDonneesUtilisateur(utilisateur.get_nom(), utilisateur.get_prenom(),
                                                                utilisateur.get_login(), utilisateur.get_email(),
                                                                utilisateur.get_numTel(), utilisateur.get_ville(),
                                                                utilisateur.get_code_projet(),
@@ -92,17 +128,22 @@ def main():
                         elif choixDel == 6:
                             break
 
-
-
+                    elif choix == 4:
+                        nom_projet = input("Entrez le nom du projet : ")
+                        date_debut = input("Entrez l'année de début : ")
+                        date_fin = input("Entrez l'année de fin : ")
+                        try:
+                            sauvegarde.AjoutProjet(nom_projet, date_debut, date_fin)
+                        except Exception as e:
+                            print(f"Erreur : {e}")
+                    elif choix == 5:
+                        nomUtilisateur = input("Entrez le nom de l'utilisateur : ")
+                        NouvelleUnite = input("Entrez le nom de l'unite : ")
+                        sauvegarde.UpdateUniteUtilisateur(NouvelleUnite, nomUtilisateur)
                     elif choix == 6:
-                        break
+                        exit()
 
-            else:
-                print("Mot de passe incorrect.")
-                Erreur += 1
-                if Erreur == 3:
-                    print("Vous avez fait trop d'erreurs.")
-                    break
+
 
 
 if __name__ == "__main__":
