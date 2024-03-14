@@ -20,30 +20,33 @@ class Utilisateur(object):
         self._login = ""
     def set_nom(self, nom):
         self._nom = nom.split()
+        self._nom = self._nom
 
     def set_prenom(self, prenom):
         self._prenom = prenom.split()
 
 
     def set_email(self, email):
-        self._email = email
+        self._email = email.lower()
 
     def set_numTel(self, numTel):
         self._numTel = numTel
 
     def set_ville(self, ville):
-        self._ville = ville
+        self._ville = ville.lower()
 
     def set_role(self, role):
-        self._role = role
+        self._role = role.lower()
 
     def set_code_projet(self, code_projet):
         self._code_projet = code_projet
 
     def set_date_debut(self, annee , mois , jour):
         self._date_debut = '{0}-{1}-{2}'.format(annee, mois, jour)
-    def GenererLogin(self):
-        self._login = self._prenom[0] + '.' + self._nom[-1]
+    def GenererLogin(self, listeLogin):
+        self._login = self._prenom[0][0] + '.' + self._nom[-1]
+        if self._login.lower() in listeLogin:
+            self._login = self._prenom[0][0] + '.' + self._nom[-1] + str(random.randint(1, 100))
         return self._login.lower()
 
     def GenererPassword(self):

@@ -98,77 +98,88 @@ class SauvegardeDonnees:
             return (element)
 
     # Les envois
-    def EnvoiDonneesUtilisateur(self, nom, prenom, login, email, numTel, ville, id_projet, passwordHash, date_debut,
-                                id_role):
+    def EnvoiDonneesUtilisateur(self, nom, prenom, login, email, numTel, ville, id_projet, passwordHash, date_debut,id_role):
         nom_str = ''.join(nom)
         prenom_str = ''.join(prenom)
         login_str = login
-        requete = (
-            f"INSERT INTO utilisateur (nom_utilisateur, prenom_utilisateur,login_utilisateur, email_utilisateur, numtel_utilisateur, ville_utilisateur, id_projet, password_hash, date_debut, id_role) VALUES ('{nom_str}','{prenom_str}','{login_str}','{email}','{numTel}','{ville}','{id_projet}','{passwordHash}','{date_debut}','{id_role}')")
+        requete = (f"INSERT INTO utilisateur (nom_utilisateur, prenom_utilisateur,login_utilisateur, email_utilisateur, numtel_utilisateur, ville_utilisateur, id_projet, password_hash, date_debut, id_role) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+        valeurs = (nom_str, prenom_str, login_str, email, numTel, ville, id_projet, passwordHash, date_debut, id_role)
         self.cursor.execute(requete)
         self.connection.commit()
 
     def EnvoiDonneesAppartientUnite(self, id_utilisateur, id_unite):
-        requete = (f"INSERT INTO appartient (id_utilisateur, id_unite) VALUES ('{id_utilisateur}','{id_unite}')")
-        self.cursor.execute(requete)
+        requete = (f"INSERT INTO appartient (id_utilisateur, id_unite) VALUES (%s,%s)")
+        valeurs = (id_utilisateur, id_unite)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
     def AjoutProjet(self, nom_projet, date_debut, date_fin):
-        requete = (f"INSERT INTO `projet`(`nom_projet`, `date_debut`, `date_fin`) VALUES ('{nom_projet}','{date_debut}','{date_fin}')")
-        self.cursor.execute(requete)
+        requete = (f"INSERT INTO `projet`(`nom_projet`, `date_debut`, `date_fin`) VALUES (%s,%s,%s)")
+        valeurs = (nom_projet, date_debut, date_fin)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
     def AjoutUnite(self, nom_unite, region):
-        requete = (f"INSERT INTO `unite`(`nom_unite`, `region`) VALUES ('{nom_unite}','{region}')")
-        self.cursor.execute(requete)
+        requete = (f"INSERT INTO `unite`(`nom_unite`, `region`) VALUES (%s,%s)")
+        valeurs = (nom_unite, region)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
     # Les updates
     def UpdateProjetUtilisateur(self, id_projet, id_utilisateur):
-        requete = (f"UPDATE utilisateur SET id_projet = '{id_projet}' WHERE id_utilisateur = '{id_utilisateur}'")
-        self.cursor.execute(requete)
+        requete = "UPDATE utilisateur SET id_projet = %s WHERE id_utilisateur = %s"
+        valeurs = (id_projet, id_utilisateur)
+        self.cursor.execute(requete, valeurs)
         self.connection.commit()
 
-    def UpdateNomUtilisateur(self,Ancientname ,NewName):
-        requete = (f"UPDATE utilisateur SET nom_utilisateur = {NewName} WHERE nom_utilisateur = {Ancientname}")
-        self.cursor.execute(requete)
+    def UpdateNomUtilisateur(self, login, NewName):
+        requete = "UPDATE utilisateur SET nom_utilisateur = %s WHERE login_utilisateur = %s"
+        valeurs = (login, NewName)
+        self.cursor.execute(requete, valeurs)
         self.connection.commit()
 
-    def UpdatePrenomUtilisateur(self,Ancientname ,NewName):
-        requete = (f"UPDATE utilisateur SET prenom_utilisateur = {NewName} WHERE prenom_utilisateur = {Ancientname}")
-        self.cursor.execute(requete)
+    def UpdatePrenomUtilisateur(self,login ,NewName):
+        requete = (f"UPDATE utilisateur SET prenom_utilisateur = %s WHERE login_utilisateur = %s")
+        valeurs = (login, NewName)
+        self.cursor.execute(requete, valeurs)
         self.connection.commit()
 
-    def UpdateEmailUtilisateur(self,AncientEmail ,NewEmail):
-        requete = (f"UPDATE utilisateur SET email_utilisateur = {NewEmail} WHERE email_utilisateur = {AncientEmail}")
-        self.cursor.execute(requete)
+    def UpdateEmailUtilisateur(self,login ,NewEmail):
+        requete = (f"UPDATE utilisateur SET email_utilisateur = %s WHERE login_utilisateur = %s")
+        valeurs = (login, NewEmail)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
-    def UpdateNumTelUtilisateur(self,AncientNumTel ,NewNumTel):
-        requete = (f"UPDATE utilisateur SET numtel_utilisateur = {NewNumTel} WHERE numtel_utilisateur = {AncientNumTel}")
-        self.cursor.execute(requete)
+    def UpdateNumTelUtilisateur(self,login ,NewNumTel):
+        requete = (f"UPDATE utilisateur SET numtel_utilisateur = %s WHERE login_utilisateur = %s")
+        valeurs = (login, NewNumTel)
+        self.cursor.execute(requete, valeurs)
         self.connection.commit()
 
-    def UpdateVilleUtilisateur(self,AncientVille ,NewVille):
-        requete = (f"UPDATE utilisateur SET ville_utilisateur = {NewVille} WHERE ville_utilisateur = {AncientVille}")
-        self.cursor.execute(requete)
+    def UpdateVilleUtilisateur(self,login ,NewVille):
+        requete = (f"UPDATE utilisateur SET ville_utilisateur = %s WHERE login_utilisateur = %s")
+        valeurs = (login, NewVille)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
-    def UpdatePasswordUtilisateur(self,NewPassword,id_utilisateur):
+    def UpdatePasswordUtilisateur(self,login ,NewPassword):
         NewPasswordhash = hashlib.sha256(NewPassword.encode("utf-8")).hexdigest()
-        requete = (f"UPDATE utilisateur SET password_hash = {NewPasswordhash} WHERE id_utilisateur = {id_utilisateur}")
-        self.cursor.execute(requete)
+        requete = (f"UPDATE utilisateur SET password_hash = %s WHERE login_utilisateur = %s ")
+        valeurs = (NewPasswordhash, login)
+        self.cursor.execute(requete,valeurs)
         self.connection.commit()
 
-    def UpdateUniteUtilisateur(self ,NewUnite, id_utilisateur):
-        requete = (f"UPDATE appartient SET id_unite = {NewUnite} WHERE id_utilisateur = {id_utilisateur}")
-        self.cursor.execute(requete)
+    def UpdateUniteUtilisateur(self ,login, NewUnite):
+        requete = (f"UPDATE appartient SET id_unite = %s WHERE login_utilisateur = %s")
+        valeurs = (NewUnite, login)
+        self.cursor.execute(requete, valeurs)
         self.connection.commit()
 
     # Les suppressions
-    def supprimerUtilisateur(self, id_utilisateur):
-        requete = (f"DELETE FROM utilisateur WHERE id_utilisateur = {id_utilisateur}")
-        self.cursor.execute(requete)
+    def supprimerUtilisateur(self, login):
+        requete = (f"DELETE FROM utilisateur WHERE login_utilisateur = %s")
+        valeur = login
+        self.cursor.execute(requete, valeur)
         self.connection.commit()
 
 sauv = SauvegardeDonnees()

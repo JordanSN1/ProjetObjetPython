@@ -37,29 +37,33 @@ def main():
             while Connexionadmin :
                 choix = int(input("\tMenu:\n1. Créer un utilisateur\n2. Supprimer un utilisateur\n3. Update un utilisateur\n4. Ajouter un projet\n5. Update l'uniter de l'utilisateur\n6. Quittez\nEntrez votre choix:"))
                 if choix == 1:
-                    nom = utilisateur.set_nom(input("Entrez votre nom : ").upper())
-                    prenom = utilisateur.set_prenom(input("Entrez votre prénom : ").upper())
+                    nom = utilisateur.set_nom(input("Entrez votre nom : ").lower())
+                    prenom = utilisateur.set_prenom(input("Entrez votre prénom : ").lower())
                     loginBDD = sauvegarde.getAllLogin()
                     data = []
                     for element in loginBDD:
                         if element != '':
                             data.append(element)
-                    if utilisateur.GenererLogin()  in data:
-                        print("Ce login existe déjà.")
-                    else :
-                        utilisateur.GenererLogin()
+
+
+                    login = utilisateur.GenererLogin(data)
 
 
 
-                    print(f"Voici votre login, ne le perdez pas ! : {utilisateur.GenererLogin()}")
+                    print(f"Voici votre login, ne le perdez pas ! : {login}")
                     print(f"Voici votre mot de passe, ne le perdez pas ! : {utilisateur.GenererPassword()}")
                     utilisateur.HashPassword()
                     utilisateur.set_email(input("Entrez votre email : "))
+                    numTel = input("Entrez votre numéro de téléphone : ")
+                    while numTel.isdigit() == False:
+                        print("Entrez un numéro de téléphone valide.")
                     utilisateur.set_numTel(input("Entrez votre numéro de téléphone : "))
-                    utilisateur.set_ville(input("Entrez votre ville : "))
+
+
+                    utilisateur.set_ville(input("Entrez votre ville : ").lower())
                     while True:
                         role = input(
-                            "Entrez votre role [chercheur scientifique,collaborateur médecin,collaborateur commercial,assistant] : ")
+                            "Entrez votre role [chercheur scientifique,collaborateur médecin,collaborateur commercial,assistant] : ").lower()
 
                         if role in sauvegarde.getRoles():
                             utilisateur.set_role(role)
@@ -78,55 +82,52 @@ def main():
                                                                utilisateur.get_date_debut(), id_role)
 
                 elif choix == 2 :
-                    nomutilisateurSupp = input("Entrez le nom de l'utilisateur à supprimer : ")
-                    prenomutilisateurSupp = input("Entrez le prénom de l'utilisateur à supprimer : ")
-                    idUtilisateurSupp = sauvegarde.getIdUtilisateur(nomutilisateurSupp, prenomutilisateurSupp)
+                    loginUtilisateurSupp = input("Entrez le login à supprimer : ").lower()
                     try:
-                        sauvegarde.supprimerUtilisateur(idUtilisateurSupp)
+                        sauvegarde.supprimerUtilisateur(login)
                     except Exception as e:
                         print(f"Erreur : {e}")
 
-                    print(f"L'utilisateur {nomutilisateurSupp,prenomutilisateurSupp} a été supprimé.")
+                    print(f"L'utilisateur {loginUtilisateurSupp} a été supprimé.")
                 elif choix == 3 :
-                    choixDel = int(input("1. Modifier le nom\n2. Modifier le prénom\n3. Modifier le numéro de téléphone\n4. Modifier la ville\n5. Modifier le mot de passe\n6. Quittez\nEntrez votre choix:"))
-                    if choixDel == 1:
-                        nom = input("Entrez le nom de l'utilisateur à modifier : ")
+                    ChoixModif = int(input("1. Modifier le nom\n2. Modifier le prénom\n3. Modifier le numéro de téléphone\n4. Modifier la ville\n5. Modifier le mot de passe\n6. Quittez\nEntrez votre choix:"))
+                    if ChoixModif == 1:
+                        login = input("Entrez le login de l'utilisateur à modifier : ")
                         newNom = input("Entrez le nouveau nom : ")
+                        print(login, newNom)
                         try:
-                            sauvegarde.UpdateNomUtilisateur(nom, newNom)
+                            sauvegarde.UpdateNomUtilisateur(login, newNom)
                         except Exception as e:
                             print(f"Erreur : {e}")
-                    elif choixDel == 2:
-                        prenom = input("Entrez le prénom de l'utilisateur à modifier : ")
+                    elif ChoixModif == 2:
+                        login = input("Entrez le login de l'utilisateur à modifier : ")
                         newPrenom = input("Entrez le nouveau prénom : ")
                         try:
-                            sauvegarde.UpdatePrenomUtilisateur(prenom, newPrenom)
+                            sauvegarde.UpdatePrenomUtilisateur(login, newPrenom)
                         except Exception as e:
                             print(f"Erreur : {e}")
-                    elif choixDel == 3:
-                        numTel = input("Entrez le numéro de téléphone de l'utilisateur à modifier : ")
+                    elif ChoixModif == 3:
+                        login = input("Entrez le login de l'utilisateur à modifier : ")
                         newNumTel = input("Entrez le nouveau numéro de téléphone : ")
                         try:
-                            sauvegarde.UpdateNumTelUtilisateur(numTel, newNumTel)
+                            sauvegarde.UpdateNumTelUtilisateur(login, newNumTel)
                         except Exception as e:
                             print(f"Erreur : {e}")
-                    elif choixDel == 4:
-                        ville = input("Entrez la ville de l'utilisateur à modifier : ")
+                    elif ChoixModif == 4:
+                        login = input("Entrez le login de l'utilisateur à modifier : ")
                         newVille = input("Entrez la nouvelle ville : ")
                         try:
-                            sauvegarde.UpdateVilleUtilisateur(ville, newVille)
+                            sauvegarde.UpdateVilleUtilisateur(login, newVille)
                         except Exception as e:
                             print(f"Erreur : {e}")
-                    elif choixDel == 5:
-                        UtilisateurNom = input("Entre le nom de l'utilisateur a changer le mot de passe : ")
-                        UtilisateurPrenom = input("Entre le prenom de l'utilisateur a changer le mot de passe : ")
-                        NewPassword = input("Entrez le nouveau mot de passe : ")
-                        id_utilisateur = sauvegarde.getIdUtilisateur(UtilisateurNom, UtilisateurPrenom)
+                    elif ChoixModif == 5:
+                        login = input("Entrez le login de l'utilisateur à modifier : ")
+                        NewPassword =  utilisateur.GenererPassword()
                         try:
-                            sauvegarde.UpdatePasswordUtilisateur(NewPassword, id_utilisateur)
+                            sauvegarde.UpdatePasswordUtilisateur(login, NewPassword)
                         except Exception as e:
                             print(f"Erreur : {e}")
-                    elif choixDel == 6:
+                    elif ChoixModif == 6:
                         break
 
                 elif choix == 4:
@@ -149,3 +150,29 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
