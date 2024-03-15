@@ -35,7 +35,7 @@ CREATE TABLE utilisateur (
    id_projet INT,
    password_hash VARCHAR(100),
    id_role INT NOT NULL,
-   role_unite VARCHAR(50) CHECK(role_unite IN ('membre','chef')),
+   role_unite VARCHAR(50) CHECK(role_unite IN ('membre','chef',NULL)),
    PRIMARY KEY(id_utilisateur),
    FOREIGN KEY(id_role) REFERENCES role(id_role) ON DELETE CASCADE,
    FOREIGN KEY(id_projet) REFERENCES projet(id_projet) ON DELETE CASCADE
