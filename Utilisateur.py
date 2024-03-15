@@ -2,7 +2,7 @@ import random
 import string as st
 import datetime
 import hashlib
-
+#MDP ADMIN = rootAdmin_0001
 class Utilisateur(object):
 
     def __init__(self):
