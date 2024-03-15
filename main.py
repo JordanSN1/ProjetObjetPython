@@ -43,14 +43,10 @@ def main():
                         nom = utilisateur.set_nom(input("Entrez votre nom : ").lower())
                         prenom = utilisateur.set_prenom(input("Entrez votre prénom : ").lower())
                         loginBDD = sauvegarde.getAllLogin()
-                        print(f"ceci est loginBDD {loginBDD}")
                         data = []
                         for element in loginBDD:
                             if element != '':
                                 data.append(element)
-                        print(f"ceci est data {data}")
-
-
                         ListeLogin = utilisateur.GenererLogin(data)
 
 
@@ -69,7 +65,6 @@ def main():
                         utilisateur.set_ville(input("Entrez votre ville : ").lower())
                         while True:
                             role = input("Entrez votre role [chercheur scientifique,collaborateur médecin,collaborateur commercial,assistant] : ").lower()
-
                             if role in sauvegarde.getRoles():
                                 utilisateur.set_role(role)
                                 break

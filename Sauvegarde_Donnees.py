@@ -103,8 +103,7 @@ class SauvegardeDonnees:
 
     def getIdUtilisateur(self, nom, prenom):
         try:
-            self.cursor.execute(
-                f"SELECT id_utilisateur FROM utilisateur WHERE nom_utilisateur = '{nom}' AND prenom_utilisateur = '{prenom}'")
+            self.cursor.execute(f"SELECT id_utilisateur FROM utilisateur WHERE nom_utilisateur = '{nom}' AND prenom_utilisateur = '{prenom}'")
             result = self.cursor.fetchall()
             for element in result:
                 return element[0]

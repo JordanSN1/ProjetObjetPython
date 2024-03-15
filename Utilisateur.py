@@ -18,6 +18,7 @@ class Utilisateur(object):
         self._password = ""
         self._caracteres = ""
         self._login = ""
+
     def set_nom(self, nom):
         self._nom = nom.split()
         self._nom = self._nom
@@ -45,7 +46,6 @@ class Utilisateur(object):
         self._date_debut = '{0}-{1}-{2}'.format(annee, mois, jour)
         
     def GenererLogin(self, listeLogin):
-        print(listeLogin)
         self._login =  self._nom[0] + '.' + self._prenom[0][0]
         if self._login.lower() in listeLogin:
             self._login = self._nom[0] + '.' + self._prenom[0][0] +'_'+ str(random.randint(1, 100))
