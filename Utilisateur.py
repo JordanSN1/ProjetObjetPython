@@ -43,10 +43,12 @@ class Utilisateur(object):
 
     def set_date_debut(self, annee , mois , jour):
         self._date_debut = '{0}-{1}-{2}'.format(annee, mois, jour)
+        
     def GenererLogin(self, listeLogin):
-        self._login = self._prenom[0][0] + '.' + self._nom[-1]
+        print(listeLogin)
+        self._login =  self._nom[0] + '.' + self._prenom[0][0]
         if self._login.lower() in listeLogin:
-            self._login = self._prenom[0][0] + '.' + self._nom[-1] + str(random.randint(1, 100))
+            self._login = self._nom[0] + '.' + self._prenom[0][0] +'_'+ str(random.randint(1, 100))
         return self._login.lower()
 
     def GenererPassword(self):
