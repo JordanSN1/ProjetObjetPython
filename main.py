@@ -22,7 +22,7 @@ def main():
                 print("Vous avez fait 3 erreurs.\n")
                 exit()
         
-        if login == 'admin' :
+        elif login == 'admin' :
             password = getpass.getpass("Entrez votre mot de passe: ")
             print("Nous vérifions votre identité. Veuillez patienter...\n")
             time.sleep(3)
@@ -118,12 +118,13 @@ def main():
                         elif ChoixModif == 5:
                             login = input("Entrez le login de l'utilisateur à modifier : ")
                             NewPassword =  utilisateur.GenererPassword()
+                            print(f"Le nouveau mot de passe est : {NewPassword}, Ne le perdez pas ! ")
                             try:
                                 sauvegarde.UpdatePasswordUtilisateur(login, NewPassword)
                             except Exception as e:
                                 print(f"Erreur : {e}")
                         elif ChoixModif == 6:
-                            break
+                            pass
 
                     elif choix == 4:
                         nom_projet = input("Entrez le nom du projet : ")
@@ -136,7 +137,7 @@ def main():
                     elif choix == 5:
                         loginUtilisateur = input("Entrez le login de l'utilisateur : ")
                         NouvelleUnite = input("Entrez le nom de l'unite : ")
-                        sauvegarde.UpdateUniteUtilisateur(loginUtilisateur, NouvelleUnite)
+                        sauvegarde.UpdateUniteUtilisateur(sauvegarde.getIdUtilisateur(loginUtilisateur), NouvelleUnite)
                     
                     elif choix == 6:
                         NomUnite = input("Entrez le nom de l'unite : ")
@@ -149,7 +150,7 @@ def main():
                     elif choix == 7:
                         loginUtilisateur = input("Entrez le login de l'utilisateur : ")
                         if sauvegarde.getanciennete(loginUtilisateur) >= 10:
-                            sauvegarde.UpdateRoleUtilisateur(loginUtilisateur, "chef")
+                            sauvegarde.UpdateRoleUniteUtilisateur(loginUtilisateur, "chef")
                             print("L'utilisateur est passé en chef.")
                         else:
                             print("L'utilisateur n'a pas l'ancienneté requise.")
@@ -159,6 +160,26 @@ def main():
                         Connexionadmin = False
                     elif choix == 9:
                         exit()
+        else :
+            password = getpass.getpass("Entrez votre mot de passe: ")
+            if hashlib.sha256(password.encode("utf-8")).hexdigest() == sauvegarde.getHashPassword(login):
+                print("Nous vérifions votre identité. Veuillez patienter...\n")
+                time.sleep(3)
+                print("Vous êtes connecté.\n")
+                Connexion = True
+            while Connexion :
+                choix = input("\tMenu:\n1. Voir les informations de l'utilisateur\n2. Se deconnecter\n3. Quitter\n")
+                if choix == '1':
+                    print("Information de l'utilisateur:\n")
+                elif choix == '2':
+                    print("Vous êtes déconnecté.")
+                    Connexion = False
+                    break
+                elif choix == '3':
+                    exit()
+
+
+
 
 
 
